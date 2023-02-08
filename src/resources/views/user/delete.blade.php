@@ -6,7 +6,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Delete') }}
-                
+                    
+                    <a href="{{ route('main') }}">Return</a>
                    
                 </div>
 

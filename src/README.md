@@ -32,9 +32,15 @@ Posteriormente, solo se debería ejecutar
 php artisan migrate:fresh --seed
 ```
 
-
 y listo. La aplicación debería correr en localhost:8075 y la base de datos es accesible a través de 127.0.0.1:33075 con cualquier gestor
 
 las credenciales:
 user: latammobile
 password: latammobile
+
+
+Las credenciales iniciales para ingresar serian:
+
+
+email: johndoe@gmail.com
+pass: 12345678a
