@@ -6,6 +6,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}
+
+                    <a href="{{ route('new_user') }}" class="btn btn-primary float-right">Add User</a>
                 </div>
 
                 <div class="card-body">

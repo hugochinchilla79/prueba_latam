@@ -15,6 +15,33 @@ class MainController extends Controller
         return view('user.list', ['users' => $users]);
     }
 
+    public function newUser()
+    {
+        return view('user.create');
+    }
+
+
+    public function create()
+    {
+        $validation = Validator::make(request()->all(),[
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string',
+            'password_confirmation' => 'required|string|same:password'
+        ]);
+
+        if($validation->fails()) {
+            return redirect()->back()->withErrors($validation->errors());
+        }
+
+        $user = new User();
+        $user->name = request()->name;
+        $user->email = request()->email;
+        $user->password = Hash::make(request()->password);
+        $user->save();
+        return redirect()->action([MainController::class, 'main']);
+    }
+
     public function user(Request $request, $id)
     {
         $user = User::find($id);
@@ -51,6 +78,8 @@ class MainController extends Controller
 
         $user = User::find($request->id);
         $user->delete();
+
+        return redirect()->action([MainController::class, 'main']);
     }
 
 

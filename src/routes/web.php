@@ -23,6 +23,8 @@ Auth::routes();
 Route::get('/', [MainController::class, 'main'])->middleware('auth')->name('main');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'user'], function () {
+    Route::get('/create', [MainController::class, 'newUser'])->name('new_user');
+    Route::post('/create', [MainController::class, 'create'])->name('create_user');
     Route::get('/{id}', [MainController::class, 'user'])->name('edit_user');
     Route::get('/{id}/delete', [MainController::class, 'confirmRemove'])->name('delete_user');
     Route::post('/{id}/update', [MainController::class, 'update'])->name('update_user');
