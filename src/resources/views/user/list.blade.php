@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Register') }}
 
-                    <a href="{{ route('new_user') }}" class="btn btn-primary float-right">Add User</a>
+                    <a href="{{ route('new_user') }}" class="btn btn-primary float-end">Add User</a>
                 </div>
 
                 <div class="card-body">
@@ -17,6 +17,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Country</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -26,6 +27,7 @@
                             <tr>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email}}</td>
+                                <td>{{ $user->country->name }}</td>
                                 <td><a href="{{ route('edit_user', ['id' => $user->id]) }}">edit</a>|<a href="{{ route('delete_user', ['id' => $user->id]) }}">delete</a></td>
                             </tr>
                             @endforeach

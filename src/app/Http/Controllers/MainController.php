@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -17,56 +18,39 @@ class MainController extends Controller
 
     public function newUser()
     {
-        return view('user.create');
+        $countries = Country::all();
+        return view('user.create', ['countries' => $countries]);
     }
 
 
-    public function create()
+    public function create(Request $request)
     {
-        $validation = Validator::make(request()->all(),[
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required|string',
-            'password_confirmation' => 'required|string|same:password'
-        ]);
+        $validation = Validator::make(request()->all(),$this->getUserValidationRules());
 
         if($validation->fails()) {
             return redirect()->back()->withErrors($validation->errors());
         }
 
-        $user = new User();
-        $user->name = request()->name;
-        $user->email = request()->email;
-        $user->password = Hash::make(request()->password);
-        $user->save();
+        $this->saveUser((new User()), $request);
         return redirect()->action([MainController::class, 'main']);
     }
 
     public function user(Request $request, $id)
     {
+        $countries = Country::all();
         $user = User::find($id);
-        return view('user.edit', ['user' => $user]);
+        return view('user.edit', ['user' => $user, 'countries' => $countries]);
     }
 
     public function update(Request $request)
     {
-        $validation = Validator::make($request->all(),[
-            'id' => 'required|integer',
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required|string',
-            'password_confirmation' => 'required|string|same:password'
-        ]);
-
+        $validation = Validator::make($request->all(),$this->getUserValidationRules());
         if($validation->fails()) {
             return redirect()->back()->withErrors($validation->errors());
         }
 
         $user = User::find($request->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        $this->saveUser($user, $request);
         return redirect()->action([MainController::class, 'main']);
     }
 
@@ -87,5 +71,27 @@ class MainController extends Controller
     {
         $user = User::find($id);
         return view('user.delete', ['user' => $user]);
+    }
+
+
+    private function getUserValidationRules()
+    {
+        return [
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string',
+            'id_country' => 'required|integer',
+            'password_confirmation' => 'required|string|same:password'
+        ];
+    }
+
+
+    private function saveUser(User $user, Request $request)
+    {
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->id_country = $request->id_country;
+        $user->save();
     }
 }

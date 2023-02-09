@@ -45,6 +45,26 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="country" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
+
+                            <div class="col-md-6">
+
+                                <select name="id_country" class="form-control">
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country->id_country }}" {{ old('id_country') != '' ? (old('id_country') == $country->id ? 'selected' : '') : ($user->id_country == $country->id_country ? 'selected' : '') }}>{{ $country->name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('id_country')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
